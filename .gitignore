@@ -1,0 +1,9 @@
+# build files
+dist/
+
+# npm
+node_modules/
+npm-debug.log
+
+# Intellij
+.idea/workspace.xml
