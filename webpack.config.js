@@ -1,8 +1,11 @@
 module.exports = {
-    entry: './js/main.js',
+    entry: {
+        bundle: './js/main.js',
+        translation2D: './examples/2d/translation/main.js'
+    },
     output: {
-        filename: 'bundle.js',
-        path: './dist'
+        filename: '[name].js',
+        path: __dirname + '/dist'
     },
     module: {
         loaders: [
