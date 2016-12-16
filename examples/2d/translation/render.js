@@ -5,19 +5,13 @@ var rectangle = require('../../../js/geometry/rectangle');
 var canvas = util.getCanvas('glcanvas');
 var gl = util.initWebGL(canvas);
 
-// component variables
-var translation = [100, 200];
-var width = 100;
-var height = 30;
-var color = [Math.random(), Math.random(), Math.random(), 1];
-
 if (gl) {
     // set clear color
     gl.clearColor(0, 0, 0, 0);
 
     // compile and link the shaders to the program.
-    var vertexShaderSource = require('../../../glsl/basic-vertex-shader.vs');
-    var fragmentShaderSource = require('../../../glsl/basic-fragment-shader.fs');
+    var vertexShaderSource = require('./vertex-shader.vs');
+    var fragmentShaderSource = require('./fragment-shader.fs');
     var vertexShader = util.createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
     var fragmentShader = util.createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
     var program = util.createProgram(gl, vertexShader, fragmentShader);
@@ -29,6 +23,7 @@ if (gl) {
     var positionLocation = gl.getAttribLocation(program, 'a_position');
     var resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
     var colorLocation = gl.getUniformLocation(program, 'u_color');
+    var translationLocation = gl.getUniformLocation(program, 'u_translation');
 
     module.exports = function render(translation, width, height, color) {
         // load the program
@@ -43,11 +38,14 @@ if (gl) {
 
         // bind and populate the position buffer
         gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, rectangle.asTriangles(translation[0], translation[1], width, height), gl.STATIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, rectangle.asTriangles(0, 0, width, height), gl.STATIC_DRAW);
 
         // bind to position attribute
         gl.enableVertexAttribArray(positionLocation);
         gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+        // set the translation uniform
+        gl.uniform2fv(translationLocation, translation);
 
         // set the resolution uniform
         gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
