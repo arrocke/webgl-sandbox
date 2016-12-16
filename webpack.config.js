@@ -2,7 +2,8 @@ module.exports = {
     entry: {
         bundle: './js/main.js',
         translation2D: './examples/2d/translation/main.js',
-        rotation2D: './examples/2d/rotation/main.js'
+        rotation2D: './examples/2d/rotation/main.js',
+        scale2D: './examples/2d/scale/main.js'
     },
     output: {
         filename: '[name].js',
