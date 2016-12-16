@@ -3,7 +3,10 @@ module.exports = {
         bundle: './js/main.js',
         translation2D: './examples/2d/translation/main.js',
         rotation2D: './examples/2d/rotation/main.js',
-        scale2D: './examples/2d/scale/main.js'
+        scale2D: './examples/2d/scale/main.js',
+        'transformation-matrix2d': './examples/2d/transformation-matrix/main.js',
+        'move-origin2d': './examples/2d/move-origin/main.js',
+        hierarchical2d: './examples/2d/hierarchical/main.js',
     },
     output: {
         filename: '[name].js',
