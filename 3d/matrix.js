@@ -67,6 +67,14 @@ module.exports = {
         1
       ];
   },
+  perspective: function (fudge) {
+      return [
+          1, 0, 0, 0,
+          0, 1, 0, 0,
+          0, 0, 1, fudge,
+          0, 0, 0, 1
+      ];
+  },
   multiply: function (m1, m2) {
     var r = [];
     for (var k = 0; k < 16; k++) {

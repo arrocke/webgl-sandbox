@@ -15,6 +15,8 @@ var xScaleRange = document.getElementById('scale-x');
 var yScaleRange = document.getElementById('scale-y');
 var zScaleRange = document.getElementById('scale-z');
 
+var fudgeRange = document.getElementById('fudge');
+
 var canvas = util.getCanvas('glcanvas');
 var gl = util.initWebGL(canvas);
 
@@ -55,7 +57,10 @@ function update() {
   var yScale = parseFloat(yScaleRange.value);
   var zScale = parseFloat(zScaleRange.value);
 
-  var transformation = matrix.orthographic(0, gl.canvas.clientWidth, gl.canvas.clientHeight, 0, -depth / 2, depth / 2);
+  var fudge = parseFloat(fudgeRange.value);
+
+  var transformation = matrix.perspective(fudge);
+  transformation = matrix.multiply(matrix.orthographic(0, gl.canvas.clientWidth, gl.canvas.clientHeight, 0, -depth / 2, depth / 2), transformation);
   transformation = matrix.translate(transformation, xTranslate, yTranslate, zTranslate);
   transformation = matrix.xRotate(transformation, xRotate);
   transformation = matrix.yRotate(transformation, yRotate);
@@ -358,6 +363,8 @@ xScaleRange.addEventListener('input', update);
 yScaleRange.addEventListener('input', update);
 zScaleRange.addEventListener('input', update);
 
+fudgeRange.addEventListener('input', update);
+
 xRotateRange.addEventListener('change', update);
 yRotateRange.addEventListener('change', update);
 zRotateRange.addEventListener('change', update);
@@ -369,5 +376,7 @@ zTranslateRange.addEventListener('change', update);
 xScaleRange.addEventListener('change', update);
 yScaleRange.addEventListener('change', update);
 zScaleRange.addEventListener('change', update);
+
+fudgeRange.addEventListener('change', update);
 
 update();
