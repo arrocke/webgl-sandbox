@@ -57,10 +57,9 @@ function update() {
   var yScale = parseFloat(yScaleRange.value);
   var zScale = parseFloat(zScaleRange.value);
 
-  var fudge = parseFloat(fudgeRange.value);
+  var fudge = Math.PI * parseFloat(fudgeRange.value);
 
-  var transformation = matrix.perspective(fudge);
-  transformation = matrix.multiply(matrix.orthographic(0, gl.canvas.clientWidth, gl.canvas.clientHeight, 0, -depth / 2, depth / 2), transformation);
+  var transformation = matrix.perspective(fudge, canvas.clientWidth / canvas.clientHeight, 1, 2000);
   transformation = matrix.translate(transformation, xTranslate, yTranslate, zTranslate);
   transformation = matrix.xRotate(transformation, xRotate);
   transformation = matrix.yRotate(transformation, yRotate);
