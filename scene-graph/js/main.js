@@ -1,16 +1,8 @@
-var GLInstance = require('./instance');
-var vShader = require('../glsl/vShader.glsl');
-var fShader = require('../glsl/fShader.glsl');
+var GLInstance = require('./webgl/instance');
+var loadPrograms = require('./loadPrograms');
 
-var instance = new GLInstance({
+var glinstance = new GLInstance({
     id: 'glcanvas'
 });
 
-instance.createProgram(, {
-    name: 'testProgram',
-    vShader: vShader,
-    fShader: fShader,
-    attributes: [
-        'a_position'
-    ]
-});
+loadPrograms(glinstance);
