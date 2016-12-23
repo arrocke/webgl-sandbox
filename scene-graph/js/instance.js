@@ -1,4 +1,4 @@
-var Program = require('./program');
+var GLProgram = require('./program');
 
 /**
  *  @arg options
@@ -6,6 +6,7 @@ var Program = require('./program');
  */
 var GLInstance = function (options) {
     options = options || {};
+    options.clearColor = options.clearColor || [];
 
     this._canvas = document.getElementById(options.id);
     if (!this._canvas) {
@@ -20,12 +21,23 @@ var GLInstance = function (options) {
     }
 
     this._programs = {};
+
+    this._clearColor = [];
+    this._clearColor[0] = options.clearColor[0] || 0;
+    this._clearColor[1] = options.clearColor[1] || 0;
+    this._clearColor[2] = options.clearColor[2] || 0;
+    this._clearColor[3] = options.clearColor[3] || 0;
+
+    this._gl.clear.apply(this._gl, this._clearColor);
+
+
 };
 
-GLInstance.prototype.createProgram = function (name, options) {
+GLInstance.prototype.createProgram = function (options) {
     options = options || {};
     options.gl = this._gl;
-    this._programs[name] = new Program(options);
+    var name = options.name;
+    this._programs[name] = new GLProgram(options);
     var self = this;
 
     if (!this[name]) {
@@ -35,6 +47,10 @@ GLInstance.prototype.createProgram = function (name, options) {
             }).bind(self, name)
         });
     }
+};
+
+GLInstance.prototype.clear = function () {
+    this._gl.clear(this._gl.COLOR_BUFFER_BIT | this_gl.DEPTH_BUFFER_BIT);
 };
 
 module.exports = GLInstance;

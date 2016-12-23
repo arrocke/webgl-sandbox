@@ -6,7 +6,7 @@
  *  @arg options.uniforms - array of uniform names
  *  @arg options.attributes - array of attribute names
  */
-var Program = function(options) {
+var GLProgram = function(options) {
     options = options || {};
     options.uniforms = options.uniforms || [];
     options.attributes = options.attributes || [];
@@ -64,7 +64,7 @@ var Program = function(options) {
     };
 };
 
-Object.defineProperties(Program.prototype, {
+Object.defineProperties(GLProgram.prototype, {
     initialized: {
         get: function () {
             return !!this._vShader && !!this._fShader && !!this._program;
@@ -72,7 +72,7 @@ Object.defineProperties(Program.prototype, {
     }
 })
 
-Program.prototype.createShader = function (type, source) {
+GLProgram.prototype.createShader = function (type, source) {
     // create and compile the shader
     var shader = this._gl.createShader(type);
     this._gl.shaderSource(shader, source);
@@ -89,7 +89,7 @@ Program.prototype.createShader = function (type, source) {
     }
 };
 
-Program.prototype.createProgram = function () {
+GLProgram.prototype.createProgram = function () {
     // create and link the program
     var program = this._gl.createProgram();
     this._gl.attachShader(program, this._vShader);
@@ -107,8 +107,8 @@ Program.prototype.createProgram = function () {
     }
 };
 
-Program.prototype.use = function () {
+GLProgram.prototype.use = function () {
     this._gl.useProgram(this._program);
 };
 
-module.exports = Program;
+module.exports = GLProgram;
