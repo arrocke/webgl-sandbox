@@ -8,26 +8,36 @@ var F = function (options) {
     this._positionBuffer = this._gl.createBuffer();
     this.setGeometry();
 
+    this._transform = m4.identity();
+
 };
 
 F.prototype = Object.create(GLObject.prototype);
 F.prototype.constructor = F;
 
-F.prototype.getTransform = function () {
-    var m = m4.perspective(Math.PI / 3, this._gl.canvas.clientWidth / this._gl.canvas.clientHeight, 1, 2000);
-    m = m4.translate(m, -150, 0, -360);
-    //m = m4.xRotate(m, 190 * 2 * Math.PI / 360);
-    //m = m4.yRotate(m, 40 * 2 * Math.PI / 360);
-    //m = m4.zRotate(m, 320 * 2 * Math.PI / 360);
-    return m;
+Object.defineProperties(F.prototype, {
+    localTransform: {
+        get: function () {
+            return this._transform.slice();
+        },
+        set: function (val) {
+            if (val instanceof Array && val.length == 16) {
+                this._transform = val;
+            }
+        }
+    }
+});
+
+F.prototype.getTransform = function (viewMatrix) {
+    return m4.multiply(this._transform, viewMatrix);
 }
 
-F.prototype.render = function () {
+F.prototype.render = function (viewMatrix) {
     this._program.use();
     this._gl.bindBuffer(this._gl.ARRAY_BUFFER, this._positionBuffer);
     this._gl.enableVertexAttribArray(this._program.a_position);
     this._gl.vertexAttribPointer(this._program.a_position, this._vectorSize, this._gl.FLOAT, false, 0, 0);
-    this._gl.uniformMatrix4fv(this._program.u_transform, false, this.getTransform());
+    this._gl.uniformMatrix4fv(this._program.u_transform, false, this.getTransform(viewMatrix));
     this._gl.drawArrays(this._gl.TRIANGLES, 0, this._vertexCount);
 };
 

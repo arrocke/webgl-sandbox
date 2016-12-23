@@ -1,4 +1,5 @@
 var GLProgram = require('./program');
+var m4 = require('../geometry/matrix3d');
 
 /**
  *  @arg options
@@ -87,12 +88,17 @@ GLInstance.prototype.resizeCanvas = function () {
     this._gl.viewport(0, 0, this._gl.canvas.width, this._gl.canvas.height);
 };
 
-GLInstance.prototype.render = function () {
+GLInstance.prototype.render = function (t) {
     this.clear();
     this.resizeCanvas();
 
+    var camera = m4.yRotation(t);
+    camera = m4.translate(camera, 0, 0, 300);
+    var perspective = m4.perspective(Math.PI / 3, this._gl.canvas.clientWidth / this._gl.canvas.clientHeight, 1, 2000);
+    var view = m4.multiply(m4.inverse(camera), perspective);
+
     for (var key in this._objects) {
-        this._objects[key].render();
+        this._objects[key].render(view);
     }
 };
 

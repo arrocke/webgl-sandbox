@@ -1,4 +1,12 @@
 var matrix = {
+    identity: function () {
+        return [
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1
+        ];
+    },
     perspective: function (fov, aspect, near, far) {
         var f = Math.tan((Math.PI - fov) / 2);
         var rangeInv = 1 / (near - far);
