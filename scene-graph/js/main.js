@@ -1,6 +1,6 @@
 var GLInstance = require('./webgl/instance');
 var loadPrograms = require('./loadPrograms');
-var Rectangle = require('./objects/rectangle');
+var F = require('./objects/f.js');
 
 var glinstance = new GLInstance({
     id: 'glcanvas'
@@ -8,14 +8,14 @@ var glinstance = new GLInstance({
 
 loadPrograms(glinstance);
 
-var rect1 = new Rectangle({
+var f = new F({
     gl: glinstance.gl,
-    program: glinstance.program2d
+    program: glinstance.program3d
 });
 
 glinstance.addObject({
-    name: 'rect1',
-    object: rect1
+    name: 'f',
+    object: f
 });
 
 glinstance.render();
