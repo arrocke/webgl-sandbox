@@ -1,3 +1,5 @@
+var vector = require('./vector');
+
 var matrix = {
     identity: function () {
         return [
@@ -142,6 +144,17 @@ var matrix = {
             r.push(mij);
         }
         return this.transpose(r);
+    },
+    lookAt: function (camera, target, up) {
+        var z = vector.normalize(vector.subtract(position, target))
+        var x = vector.cross(up, z);
+        var y = vector.cross(z, x);
+        return [
+                 x[0],      x[1],      x[2], 0,
+                 y[0],      y[1],      y[2], 0,
+                 z[0],      z[1],      y[0], 0,
+            camera[0], camera[1], camera[2], 1
+        ];
     }
 };
 
