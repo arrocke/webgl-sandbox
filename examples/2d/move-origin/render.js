@@ -42,7 +42,7 @@ if (gl) {
         gl.bufferData(gl.ARRAY_BUFFER, rectangle.asTriangles(0, 0, width, height), gl.STATIC_DRAW);
 
         // bind to position attribute
-        gl.enableVertexAttribArray(positionLocation);
+        gl.enableVertexAttribArray(positionocation);
         gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
         var translationMatrix = matrix3.translation(translation[0], translation[1]);

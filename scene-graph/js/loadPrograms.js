@@ -3,7 +3,7 @@ var fShader = require('../glsl/fShader.glsl');
 
 function loadPrograms(glinstance) {
     glinstance.createProgram({
-        name: 'testProgram',
+        name: 'program2d',
         vShader: vShader,
         fShader: fShader,
         attributes: [

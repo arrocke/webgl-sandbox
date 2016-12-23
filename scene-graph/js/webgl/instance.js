@@ -21,6 +21,7 @@ var GLInstance = function (options) {
     }
 
     this._programs = {};
+    this._objects = {};
 
     this._clearColor = [];
     this._clearColor[0] = options.clearColor[0] || 0;
@@ -59,7 +60,7 @@ GLInstance.prototype.createProgram = function (options) {
 };
 
 GLInstance.prototype.clear = function () {
-    this._gl.clear(this._gl.COLOR_BUFFER_BIT | this_gl.DEPTH_BUFFER_BIT);
+    this._gl.clear(this._gl.COLOR_BUFFER_BIT | this._gl.DEPTH_BUFFER_BIT);
 };
 
 GLInstance.prototype.addObject = function (options) {
@@ -89,6 +90,10 @@ GLInstance.prototype.resizeCanvas = function () {
 GLInstance.prototype.render = function () {
     this.clear();
     this.resizeCanvas();
+
+    for (var key in this._objects) {
+        this._objects[key].render();
+    }
 };
 
 module.exports = GLInstance;
