@@ -1,7 +1,8 @@
 var GLInstance = require('./webgl/instance');
 var loadPrograms = require('./loadPrograms');
 var m4 = require('./geometry/matrix3d');
-var F = require('./objects/f.js');
+var F = require('./objects/f');
+var Cube = require('./objects/cube');
 
 var glinstance = new GLInstance({
     id: 'glcanvas'
@@ -9,30 +10,39 @@ var glinstance = new GLInstance({
 
 loadPrograms(glinstance);
 
-var f1 = new F({
+var cube = new Cube({
     gl: glinstance.gl,
     program: glinstance.program3d
 });
-var f2 = new F({
+var f = new F({
     gl: glinstance.gl,
     program: glinstance.program3d
 });
 
-f1.localTransform = m4.translation(-100, 0, 0);
-f2.localTransform = m4.translation(100, 0, 0);
+f.localTransform = m4.translation(-200, -15, -15);
+//f1.localTransform = m4.yRotate(f1.localTransform, Math.PI / 6);
+cube.localTransform = m4.translation(-15, -15, -15);
+//f2.localTransform = m4.yRotate(f2.localTransform, Math.PI / 6);
 
 glinstance.addObject({
-    name: 'f1',
-    object: f1
+    name: 'f',
+    object: f
 });
 glinstance.addObject({
-    name: 'f2',
-    object: f2
+    name: 'cube',
+    object: cube
 });
 
 var t = 0;
-
 setInterval(function () {
-    t = (t + 1) % 30;
-    glinstance.render(12 * t / 360 * 2 * Math.PI);
+    t = (t + 1) % 60;
+    var angle = 6 * t / 360 * 2 * Math.PI;
+
+    var camera = m4.yRotation(angle);
+    camera = m4.translate(camera, 0, 200, 300);
+    camera = m4.lookAt(camera.slice(12, 15), [0, 0, 0], [0, 1, 0]);
+
+    glinstance.camera = camera;
+
+    glinstance.render();
 }, 1000 / 29.97)

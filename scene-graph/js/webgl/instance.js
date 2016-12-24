@@ -34,6 +34,8 @@ var GLInstance = function (options) {
 
     this._gl.enable(this._gl.DEPTH_TEST);
     this._gl.enable(this._gl.CULL_FACE);
+
+    this._camera = m4.identity();
 };
 
 Object.defineProperties(GLInstance.prototype, {
@@ -41,8 +43,24 @@ Object.defineProperties(GLInstance.prototype, {
         get: function () {
             return this._gl;
         }
+    },
+    camera: {
+        get: function () {
+            return this._camera.slice();
+        },
+        set: function (val) {
+            if (val instanceof Array && val.length == 16) {
+                this._camera = val;
+            }
+        }
+    },
+    view: {
+        get: function () {
+            var perspective = m4.perspective(Math.PI / 3, this._gl.canvas.clientWidth / this._gl.canvas.clientHeight, 1, 2000);
+            return m4.multiply(m4.inverse(this._camera), perspective);
+        }
     }
-})
+});
 
 GLInstance.prototype.createProgram = function (options) {
     options = options || {};
@@ -92,13 +110,8 @@ GLInstance.prototype.render = function (t) {
     this.clear();
     this.resizeCanvas();
 
-    var camera = m4.yRotation(t);
-    camera = m4.translate(camera, 0, 0, 300);
-    var perspective = m4.perspective(Math.PI / 3, this._gl.canvas.clientWidth / this._gl.canvas.clientHeight, 1, 2000);
-    var view = m4.multiply(m4.inverse(camera), perspective);
-
     for (var key in this._objects) {
-        this._objects[key].render(view);
+        this._objects[key].render(this.view);
     }
 };
 

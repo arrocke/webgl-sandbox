@@ -28,4 +28,6 @@ var vector = {
             return [0, 0, 0];
         }
     }
-}
+};
+
+module.exports = vector;
