@@ -8,7 +8,8 @@ module.exports = {
         'move-origin2d': './examples/2d/move-origin/main.js',
         hierarchical2d: './examples/2d/hierarchical/main.js',
         test3d: './3d/test.js',
-        'scene-graph': './scene-graph/js/main.js'
+        'scene-graph': './scene-graph/js/main.js',
+        ogv: './ogv/main.js'
     },
     output: {
         filename: '[name].js',
