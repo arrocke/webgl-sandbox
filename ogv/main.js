@@ -7,4 +7,6 @@ loadFile(processVideo);
 
 function processVideo(buffer) {
     var pageDecoder = new PageDecoder(buffer);
+    var packets = pageDecoder.packets;
+    var idHeader = new IdentificationHeader(packets[0]);
 }

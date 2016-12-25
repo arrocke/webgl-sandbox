@@ -1,9 +1,9 @@
 var encodings = require('../util/encodings');
 var BufferIterator = require('../util/bufferIterator');
 
-var IdentificationHeader = function (packet) {
-    this._packet = packet;
-    this._iterator = new BufferIterator(packet.DATA_BUFFER);
+var IdentificationHeader = function (buffer) {
+    this._buffer = buffer;
+    this._iterator = new BufferIterator(buffer);
 
     this.decode();
 };
