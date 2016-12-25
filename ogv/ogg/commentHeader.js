@@ -1,9 +1,9 @@
 var encodings = require('../util/encodings');
 var BufferIterator = require('../util/bufferIterator');
 
-var CommentHeader = function (packet) {
-    this._packet = packet;
-    this._iterator = new BufferIterator(packet.DATA_BUFFER);
+var CommentHeader = function (buffer) {
+    this._buffer = buffer;
+    this._iterator = new BufferIterator(buffer);
 
     this.decode();
 };
@@ -42,7 +42,15 @@ CommentHeader.prototype.decode = function () {
     }
 
     this.NCOMMENTS = this.decodeLEN();
+    this.COMMENTS = [];
 
+    for (var ci = 0; ci < this.NCOMMENTS; ci++) {
+        LEN = this.decodeLEN();
+        this.COMMENTS[ci] = '';
+        for (var chi = 0; chi < LEN; chi++) {
+            this.COMMENTS[ci] += String.fromCharCode(this._iterator.getBits(8));
+        }
+    }
 };
 
 module.exports = CommentHeader;
