@@ -1,5 +1,5 @@
 var BufferIterator = function (buffer) {
-    this._buffer = buffer;
+    this._buffer = buffer
     this._view = new DataView(buffer);
 
     this._position = 0;
@@ -21,12 +21,12 @@ Object.defineProperties(BufferIterator.prototype, {
             return this._position < this.bitLength;
         }
     },
-    _bytePosition: {
+    bytePosition: {
         get: function () {
             return Math.floor(this._position / 8);
         }
     },
-    _bitOffset: {
+    bitOffset: {
         get: function () {
             return this._position % 8;
         }
@@ -34,27 +34,27 @@ Object.defineProperties(BufferIterator.prototype, {
 });
 
 BufferIterator.prototype.getBits = function (nBits) {
-    if ((nBits + this._bitOffset) <= 32 && (this._position + nBits) <= this.bitLength) {
+    if ((nBits + this.bitOffset) <= 32 && (this._position + nBits) <= this.bitLength) {
         var data;
         var left;
         if (this.bitLength - this._position <= 8) {
-            data = this._view.getUint8(this._bytePosition);
+            data = this._view.getUint8(this.bytePosition);
             left = 24 + this._bitOffset;
         }
         else if (this.bitLength - this._position <= 16) {
-            data = this._view.getUint16(this._bytePosition);
+            data = this._view.getUint16(this.bytePosition);
             left = 16 + this._bitOffset;
         }
         else if (this.bitLength - this._position <= 24) {
-            data = this._view.getUint8(this._bytePosition) * Math.pow(2, 16) + this._view.getUint16(this._bytePosition + 1);
+            data = this._view.getUint8(this.bytePosition) * Math.pow(2, 16) + this._view.getUint16(this.bytePosition + 1);
             left = 8 + this._bitOffset;
         }
         else {
-            data = this._view.getUint32(this._bytePosition);
-            left = this._bitOffset; 
+            data = this._view.getUint32(this.bytePosition);
+            left = this._bitOffset;
         }
 
-        if (this._bitOffset) {
+        if (this.bitOffset) {
             data = data << left;
         }
 
@@ -65,8 +65,8 @@ BufferIterator.prototype.getBits = function (nBits) {
 };
 
 BufferIterator.prototype.getBuffer = function (nBytes) {
-    if (this._bitOffset == 0 && (this._bytePosition + nBytes) <= this.byteLength) {
-        var buffer = this._buffer.slice(this._bytePosition, this._bytePosition + nBytes);
+    if (this.bitOffset == 0 && (this.bytePosition + nBytes) <= this.byteLength) {
+        var buffer = this._buffer.slice(this.bytePosition, this.bytePosition + nBytes);
         this._position += nBytes * 8;
         return buffer;
     }

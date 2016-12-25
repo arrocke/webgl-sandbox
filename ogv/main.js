@@ -1,13 +1,10 @@
-var loadFile = require('./loadFile');
-var PacketDecoder = require('./packetDecoder');
-var IdentificationHeader = require('./identificationHeader');
+var loadFile = require('./util/loadFile');
+var PageDecoder = require('./ogg/pageDecoder');
+var IdentificationHeader = require('./ogg/identificationHeader');
+//var CommentHeader = require('../ogg/commentHeader');
 
 loadFile(processVideo);
 
 function processVideo(buffer) {
-    var packetDecoder = new PacketDecoder(buffer);
-
-    var packet1 = packetDecoder.decodePacket();
-
-    var identificationHeader = new IdentificationHeader(packet1);
+    var pageDecoder = new PageDecoder(buffer);
 }
