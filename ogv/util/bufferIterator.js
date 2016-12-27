@@ -34,24 +34,27 @@ Object.defineProperties(BufferIterator.prototype, {
 });
 
 BufferIterator.prototype.getBits = function (nBits) {
-    if ((nBits + this.bitOffset) <= 32 && (this._position + nBits) <= this.bitLength) {
+    if (nBits == 0) {
+        return 0;
+    }
+    else if ((nBits + this.bitOffset) <= 32 && (this._position + nBits) <= this.bitLength) {
         var data;
         var left;
         if (this.bitLength - this._position <= 8) {
             data = this._view.getUint8(this.bytePosition);
-            left = 24 + this._bitOffset;
+            left = 24 + this.bitOffset;
         }
         else if (this.bitLength - this._position <= 16) {
             data = this._view.getUint16(this.bytePosition);
-            left = 16 + this._bitOffset;
+            left = 16 + this.bitOffset;
         }
         else if (this.bitLength - this._position <= 24) {
             data = this._view.getUint8(this.bytePosition) * Math.pow(2, 16) + this._view.getUint16(this.bytePosition + 1);
-            left = 8 + this._bitOffset;
+            left = 8 + this.bitOffset;
         }
         else {
             data = this._view.getUint32(this.bytePosition);
-            left = this._bitOffset;
+            left = this.bitOffset;
         }
 
         if (this.bitOffset) {
