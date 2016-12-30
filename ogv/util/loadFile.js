@@ -1,10 +1,10 @@
-function loadVideo(callback) {
+function loadVideo(url, callback) {
     var req = new XMLHttpRequest();
     req.responseType = 'arraybuffer';
     req.addEventListener('load', function () {
         callback(req.response);
     });
-    req.open('GET', './pingpong_ball_cannon.ogv');
+    req.open('GET', url);
     req.send();
 }
 
